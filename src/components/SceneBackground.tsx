@@ -1,4 +1,3 @@
-
 import { motion } from 'framer-motion';
 
 interface SceneBackgroundProps {
@@ -6,51 +5,54 @@ interface SceneBackgroundProps {
   zoomDuration?: number;
   particles?: boolean;
   overlayOpacity?: number;
-  isWalkingScene?: boolean; // specialized flag for scene 3
+  isWalkingScene?: boolean;
 }
 
 export function SceneBackground({ 
   imageSrc, 
   zoomDuration = 30, 
   particles = true, 
-  overlayOpacity = 0.4,
+  overlayOpacity = 0.2, // Lighter overlay for the cream theme
   isWalkingScene = false
 }: SceneBackgroundProps) {
   
-  const coverAspectClass = "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 min-w-[100vw] min-h-[100vh] w-[max(100vw,calc(100vh*16/9))] h-[max(100vh,calc(100vw*9/16))]";
-
   return (
-    <div className="absolute inset-0 z-0 overflow-hidden bg-black pointer-events-none">
-      <div className={coverAspectClass}>
+    <div className="absolute inset-0 z-0 overflow-hidden bg-stone-900 pointer-events-none flex items-center justify-center">
+      
+      {/* Blurred Background layer to fill desktop screens beautifully */}
+      <div className="absolute inset-0 z-0 opacity-40">
+        <img src={imageSrc} className="w-full h-full object-cover blur-2xl transform scale-110" alt="blur-bg" />
+      </div>
+
+      {/* Main image layer - uses object-contain to never break borders on any device */}
+      <div className="relative z-10 w-full h-full flex items-center justify-center">
         {isWalkingScene ? (
-          // Scene 3 logic: Zoom the background to simulate walking forward
           <motion.img 
             src={imageSrc} 
             alt="Background" 
-            className="w-full h-full object-cover transform-origin-bottom"
-            initial={{ scale: 1.1, y: 0 }}
-            animate={{ scale: 1.3, y: '5%' }} // zoom in and shift slightly down to simulate moving forward
+            className="w-full h-full object-contain transform-origin-bottom drop-shadow-2xl"
+            initial={{ scale: 1.0, y: 0 }}
+            animate={{ scale: 1.15, y: '5%' }}
             transition={{ duration: zoomDuration, ease: "linear" }}
           />
         ) : (
-          // Normal scenes: Slow, subtle breathing zoom
           <motion.img 
             src={imageSrc} 
             alt="Background" 
-            className="w-full h-full object-cover"
-            initial={{ scale: 1.02 }}
-            animate={{ scale: 1.08 }}
+            className="w-full h-full object-contain drop-shadow-2xl"
+            initial={{ scale: 1.0 }}
+            animate={{ scale: 1.03 }}
             transition={{ duration: zoomDuration, ease: "linear" }}
           />
         )}
         
-        {/* Soft shadow overlay for text readability */}
-        <div className="absolute inset-0 bg-black" style={{ opacity: overlayOpacity }} />
+        {/* Soft shadow overlay */}
+        <div className="absolute inset-0 bg-black pointer-events-none" style={{ opacity: overlayOpacity }} />
       </div>
 
       {/* Floating Petals/Dust */}
       {particles && (
-        <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute inset-0 overflow-hidden z-20 pointer-events-none">
           {[...Array(15)].map((_, i) => (
             <motion.div
               key={i}

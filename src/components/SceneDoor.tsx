@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
+
 import type { Variants } from 'framer-motion';
 
 interface SceneDoorProps {
@@ -14,90 +15,121 @@ export default function SceneDoor({ onEnter }: SceneDoorProps) {
     setIsOpening(true);
     setTimeout(() => {
       onEnter();
-    }, 3000); // Allow camera to gently enter before transitioning
+    }, 3000); 
   };
 
-  // The scaling animation for the camera entering the venue (subtle and controlled)
-  const containerVariants: import('framer-motion').Variants = {
+  const containerVariants: Variants = {
     closed: { scale: 1 },
-    opened: { scale: 1.25, transition: { duration: 3, ease: [0.4, 0, 0.2, 1] } }
+    opened: { scale: 1.25, transition: { duration: 3, ease: [0.4, 0, 0.2, 1] as const } }
   };
 
   const leftDoorVariants: Variants = {
     closed: { rotateY: 0 },
-    opened: { rotateY: -105, transition: { duration: 3, ease: [0.25, 1, 0.5, 1] } }
+    opened: { rotateY: -100, transition: { duration: 3, ease: [0.4, 0, 0.2, 1] as const } }
   };
 
   const rightDoorVariants: Variants = {
     closed: { rotateY: 0 },
-    opened: { rotateY: 105, transition: { duration: 3, ease: [0.25, 1, 0.5, 1] } }
+    opened: { rotateY: 100, transition: { duration: 3, ease: [0.4, 0, 0.2, 1] as const } }
   };
 
-  // This ensures our layers always maintain a 16:9 aspect ratio and cover the viewport
-  const coverAspectClass = "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 min-w-[100vw] min-h-[100vh] w-[max(100vw,calc(100vh*16/9))] h-[max(100vh,calc(100vw*9/16))]";
-
-  // Polygon that cuts out an arched hole in the center for the doors
-  const archClipPath = "polygon(0% 0%, 0% 100%, 35% 100%, 35% 30%, 40% 23%, 50% 20%, 60% 23%, 65% 30%, 65% 100%, 100% 100%, 100% 0%)";
+  // Adjust these percentages based on the visual proportions of green_door.jpg
+  // The wooden rectangular doors are roughly inside these bounds:
+  const doorTop = '26%';
+  const doorLeft = '20%';
+  const doorRight = '80%';
+  const doorWidth = '30%'; // Each door is 30% width (total 60%)
 
   return (
     <motion.div 
-      className="absolute inset-0 w-full h-full overflow-hidden bg-black z-50 perspective-[2000px] origin-center"
-      onClick={handleDoorClick}
-      variants={containerVariants}
+      className="absolute inset-0 w-full h-full bg-black overflow-hidden flex items-center justify-center"
       initial="closed"
       animate={isOpening ? "opened" : "closed"}
-      exit={{ opacity: 0, transition: { duration: 1.5 } }}
+      variants={containerVariants}
     >
-      {/* LAYER 1: The Interior (What we see when doors open) */}
-      <div className={coverAspectClass}>
-        <img src="/assets/interior.jpg" alt="Interior" className="w-full h-full object-cover" />
-      </div>
+      <div className="relative z-10 w-full h-full max-w-[calc(100vh*9/16)] aspect-[9/16] mx-auto perspective-[2000px]">
+        
+        {/* Layer 1: The Interior (Scene 1 background) revealed when doors open */}
+        <div className="absolute inset-0 w-full h-full">
+          <img src="/assets/floral_bg.jpg" alt="Interior" className="w-full h-full object-cover" />
+        </div>
 
-      {/* LAYER 2: The Swinging Doors */}
-      <div className={`${coverAspectClass} z-10 pointer-events-none`}>
-        {/* Left Door */}
-        <motion.div
-          className="absolute left-[35%] top-[20%] w-[15%] h-[80%] origin-left overflow-hidden"
+        {/* Layer 2: The Outer Wall (with a rectangular hole cut out for the doors) */}
+        <div 
+          className="absolute inset-0 w-full h-full pointer-events-none"
+          style={{
+            clipPath: `polygon(0% 0%, 100% 0%, 100% 100%, ${doorRight} 100%, ${doorRight} ${doorTop}, ${doorLeft} ${doorTop}, ${doorLeft} 100%, 0% 100%)`
+          }}
+        >
+          <img src="/assets/green_door.jpg" alt="Wall" className="w-full h-full object-cover" />
+        </div>
+
+        {/* Layer 3: Left Door */}
+        <motion.div 
+          className="absolute bottom-0 cursor-pointer pointer-events-auto drop-shadow-2xl"
+          style={{ 
+            left: doorLeft, 
+            width: doorWidth, 
+            top: 0, // Full height
+            transformOrigin: 'left center',
+            clipPath: `polygon(0% ${doorTop}, 100% ${doorTop}, 100% 100%, 0% 100%)`
+          }}
           variants={leftDoorVariants}
+          onClick={handleDoorClick}
         >
-          {/* We position the background image so it perfectly matches the cutout */}
-          <img src="/assets/door.jpg" alt="" className="absolute left-[calc(-35vw*100/15)] top-[calc(-20vh*100/80)] w-[calc(100vw*100/15)] h-[calc(100vh*100/80)] max-w-none" style={{
-            width: '666.66%', // 100 / 15
-            height: '125%',  // 100 / 80
-            left: '-233.33%', // -35 / 15 * 100
-            top: '-25%',      // -20 / 80 * 100
-          }} />
+          {/* We use object-cover but shifted inside to only show the left door part of the image */}
+          <div className="w-full h-full overflow-hidden relative">
+            <img 
+              src="/assets/green_door.jpg" 
+              className="absolute top-0 h-full max-w-none" 
+              style={{ 
+                width: `${100 / parseFloat(doorWidth) * 100}%`, // ~333.33%
+                left: `-${parseFloat(doorLeft) / parseFloat(doorWidth) * 100}%`, // ~-66.66%
+              }} 
+            />
+          </div>
         </motion.div>
 
-        {/* Right Door */}
-        <motion.div
-          className="absolute left-[50%] top-[20%] w-[15%] h-[80%] origin-right overflow-hidden"
+        {/* Layer 4: Right Door */}
+        <motion.div 
+          className="absolute bottom-0 cursor-pointer pointer-events-auto drop-shadow-2xl"
+          style={{ 
+            left: '50%', 
+            width: doorWidth, 
+            top: 0, // Full height
+            transformOrigin: 'right center',
+            clipPath: `polygon(0% ${doorTop}, 100% ${doorTop}, 100% 100%, 0% 100%)`
+          }}
           variants={rightDoorVariants}
+          onClick={handleDoorClick}
         >
-          <img src="/assets/door.jpg" alt="" className="absolute max-w-none" style={{
-            width: '666.66%',
-            height: '125%',
-            left: '-333.33%', // -50 / 15 * 100
-            top: '-25%',
-          }} />
+          <div className="w-full h-full overflow-hidden relative">
+            <img 
+              src="/assets/green_door.jpg" 
+              className="absolute top-0 h-full max-w-none" 
+              style={{ 
+                width: `${100 / parseFloat(doorWidth) * 100}%`,
+                left: `-${50 / parseFloat(doorWidth) * 100}%`, 
+              }} 
+            />
+          </div>
         </motion.div>
-      </div>
 
-      {/* LAYER 3: The Exterior Walls (with a hole cut out for the doors) */}
-      <div 
-        className={`${coverAspectClass} z-20 pointer-events-none`}
-        style={{ clipPath: archClipPath }}
-      >
-        <img src="/assets/door.jpg" alt="Exterior" className="w-full h-full object-cover" />
+        {/* Tap to open overlay */}
+        {!isOpening && (
+          <motion.div 
+            className="absolute inset-0 z-50 flex items-center justify-center pointer-events-none"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: [0, 1, 0] }}
+            transition={{ duration: 3, repeat: Infinity }}
+          >
+            <p className="font-sans tracking-widest text-white/70 text-sm mt-[40vh] uppercase drop-shadow-lg bg-black/40 px-4 py-2 rounded-full backdrop-blur-sm">
+              Tap to enter
+            </p>
+          </motion.div>
+        )}
+
       </div>
-      
-      {/* Ambient shadow / fade to black during entry to smooth transition to Scene 1 */}
-      <motion.div 
-        className="absolute inset-0 z-30 pointer-events-none bg-black"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: isOpening ? 0.3 : 0 }}
-        transition={{ duration: 4 }}
-      />
     </motion.div>
   );
 }

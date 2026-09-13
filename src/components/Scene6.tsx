@@ -12,7 +12,7 @@ export default function Scene6() {
       animate={{ opacity: 1 }}
       transition={{ duration: 2.5 }}
     >
-      <SceneBackground imageSrc="/assets/scene6.jpg" overlayOpacity={0.4} zoomDuration={40} />
+      <SceneBackground imageSrc="/assets/scene6.jpg" overlayOpacity={0.2} zoomDuration={20} />
 
       <div className="relative z-10 flex flex-col items-center justify-center gap-[4vh] w-full max-w-3xl h-full px-6 py-12">
         

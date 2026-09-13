@@ -38,9 +38,10 @@ export default function Scene3({ onComplete }: Scene3Props) {
       <motion.div className="absolute inset-0 w-full h-full origin-bottom" animate={walkBobbing}>
         <SceneBackground 
           imageSrc="/assets/scene3.jpg" 
-          overlayOpacity={0.2} 
+          overlayOpacity={0.15} 
           zoomDuration={12} 
           particles={true}
+          isWalkingScene={true}
         />
       </motion.div>
 
