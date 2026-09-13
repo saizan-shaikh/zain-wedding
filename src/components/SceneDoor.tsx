@@ -19,7 +19,7 @@ export default function SceneDoor({ onEnter }: SceneDoorProps) {
 
   const containerVariants: Variants = {
     closed: { scale: 1 },
-    opened: { scale: 1.25, transition: { duration: 3, ease: [0.4, 0, 0.2, 1] as const } }
+    opened: { scale: 1.10, transition: { duration: 3, ease: [0.4, 0, 0.2, 1] as const } }
   };
 
   const leftDoorVariants: Variants = {
@@ -46,7 +46,7 @@ export default function SceneDoor({ onEnter }: SceneDoorProps) {
       animate={isOpening ? "opened" : "closed"}
       variants={containerVariants}
     >
-      <div className="relative w-full h-full perspective-[2000px]">
+      <div className="relative w-full h-full max-w-[min(100vw,calc(100vh*0.45))] mx-auto perspective-[2000px]">
         
         {/* Layer 1: The Interior (Scene 2 floral background) revealed when doors open */}
         <div className="absolute inset-0 w-full h-full">

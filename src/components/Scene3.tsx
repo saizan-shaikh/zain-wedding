@@ -42,6 +42,7 @@ export default function Scene3({ onComplete }: Scene3Props) {
           zoomDuration={12} 
           particles={true}
           isWalkingScene={true}
+          bgColor="#000000"
         />
       </motion.div>
 

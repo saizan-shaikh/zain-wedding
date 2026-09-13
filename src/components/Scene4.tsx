@@ -27,17 +27,17 @@ export default function Scene4({ onComplete }: Scene4Props) {
     >
       <SceneBackground imageSrc="/assets/ref_s4.jpg" overlayOpacity={0.0} />
 
-      <div className="relative z-20 flex flex-col items-center justify-center gap-[4vh] w-full max-w-[calc(100vh*9/16)] h-full px-8 py-16 mx-auto">
+      <div className="relative z-20 flex flex-col items-center justify-center gap-2 w-full max-w-[min(100vw,calc(100vh*0.45))] h-full px-6 py-12 mx-auto">
         
         {/* Formal Ornamental Bismillah */}
-        <CinematicElement delayOffset={1} duration={2.5} className="flex items-center space-x-4 mb-[2vh]">
-          <p className="font-arabic text-xl md:text-2xl text-[#3B4232]">
+        <CinematicElement delayOffset={1} duration={2.5} className="flex items-center mt-[4vh] mb-[1vh]">
+          <p className="font-arabic text-lg md:text-xl text-[#3B4232]">
             {weddingData.bismillah}
           </p>
         </CinematicElement>
 
-        <CinematicElement delayOffset={3} className="mb-[2vh]">
-          <h3 className="font-sans text-xs md:text-sm tracking-[0.3em] text-[#5C6551] uppercase font-medium">
+        <CinematicElement delayOffset={3} className="mb-[1vh]">
+          <h3 className="font-sans text-[8px] md:text-[10px] tracking-[0.3em] text-[#5C6551] uppercase font-medium">
             Wedding Events
           </h3>
         </CinematicElement>
@@ -46,45 +46,43 @@ export default function Scene4({ onComplete }: Scene4Props) {
           const baseDelay = 4 + (index * 4); // each event spaced by 4 seconds, starting after Bismillah
           
           return (
-            <div key={index} className="flex flex-col items-center gap-[1vh] mb-[2vh] w-full">
+            <div key={index} className="flex flex-col items-center gap-1 mb-[1vh] w-full">
               
               <CinematicElement delayOffset={baseDelay}>
                 {index === 0 ? (
-                  // Nikah Rings Icon (Using text as a placeholder since we don't have SVG, or just a decorative element)
-                  <span className="text-2xl text-[#A68F63]">⚭</span>
+                  <span className="text-lg md:text-xl text-[#A68F63]">⚭</span>
                 ) : (
-                  // Walima Food/Plate Icon or decorative divider
-                  <span className="text-xl text-[#A68F63]">✧</span>
+                  <span className="text-base md:text-lg text-[#A68F63]">✧</span>
                 )}
               </CinematicElement>
 
               <CinematicElement delayOffset={baseDelay + 0.5}>
-                <h2 className="font-serif text-2xl md:text-3xl tracking-widest text-[#2A3122] uppercase font-bold">
+                <h2 className="font-serif text-xl md:text-2xl tracking-widest text-[#2A3122] uppercase font-bold">
                   {event.title}
                 </h2>
               </CinematicElement>
               
               <CinematicElement delayOffset={baseDelay + 1.5}>
-                <p className="font-sans text-xs md:text-sm tracking-[0.1em] text-[#454D3C]">
+                <p className="font-sans text-[9px] md:text-[10px] tracking-[0.1em] text-[#454D3C] mt-1">
                   {event.date}
                 </p>
               </CinematicElement>
               
               <CinematicElement delayOffset={baseDelay + 2.5}>
-                <p className="font-sans text-xs md:text-sm tracking-[0.1em] text-[#454D3C]">
+                <p className="font-sans text-[9px] md:text-[10px] tracking-[0.1em] text-[#454D3C]">
                   {event.time}
                 </p>
               </CinematicElement>
               
               <CinematicElement delayOffset={baseDelay + 3.5}>
-                <p className="font-serif text-sm md:text-base text-[#5C6551] italic mt-1">
+                <p className="font-serif text-[10px] md:text-xs text-[#5C6551] italic mt-1">
                   {event.location}
                 </p>
               </CinematicElement>
 
               {index !== weddingData.events.length - 1 && (
-                <CinematicElement delayOffset={baseDelay + 4} className="mt-[2vh]">
-                   <span className="w-16 h-[1px] bg-[#A68F63]/30 block mx-auto" />
+                <CinematicElement delayOffset={baseDelay + 4} className="mt-[1vh]">
+                   <span className="w-12 h-[1px] bg-[#A68F63]/30 block mx-auto" />
                 </CinematicElement>
               )}
             </div>
