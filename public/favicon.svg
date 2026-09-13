@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" fill="#1a110a" rx="128"/>
+  <rect x="32" y="32" width="448" height="448" fill="none" stroke="#d4af37" stroke-width="16" rx="96"/>
+  <rect x="48" y="48" width="416" height="416" fill="none" stroke="#d4af37" stroke-width="4" stroke-opacity="0.5" rx="80"/>
+  <text x="256" y="340" font-family="Georgia, serif" font-size="200" font-weight="normal" fill="#f3e5ab" text-anchor="middle" letter-spacing="-5">Z&amp;I</text>
+</svg>

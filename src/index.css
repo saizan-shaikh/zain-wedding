@@ -1,0 +1,43 @@
+@import "tailwindcss";
+
+@theme {
+  --font-serif: "Cinzel", serif;
+  --font-sans: "Montserrat", sans-serif;
+  --font-arabic: "Amiri", serif;
+  
+  --color-ivory: #FFFFF0;
+  --color-champagne: #F7E7CE;
+  --color-gold: #D4AF37;
+  --color-gold-light: #E5C158;
+  --color-brown-deep: #3E2723;
+  --color-brown-dark: #2D1A11;
+}
+
+@layer utilities {
+  .text-clamp-2xl {
+    font-size: clamp(1.5rem, 4vw, 3rem);
+  }
+  .text-clamp-5xl {
+    font-size: clamp(3rem, 10vw, 8rem);
+  }
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  background-color: var(--color-brown-deep);
+  color: var(--color-ivory);
+  font-family: var(--font-sans);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+}
