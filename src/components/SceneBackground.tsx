@@ -12,25 +12,25 @@ export function SceneBackground({
   imageSrc, 
   zoomDuration = 30, 
   particles = true, 
-  overlayOpacity = 0.2, // Lighter overlay for the cream theme
+  overlayOpacity = 0.0,
   isWalkingScene = false
 }: SceneBackgroundProps) {
   
   return (
-    <div className="absolute inset-0 z-0 overflow-hidden bg-stone-900 pointer-events-none flex items-center justify-center">
+    <div className="absolute inset-0 z-0 overflow-hidden bg-[#f4f1eb] pointer-events-none flex items-center justify-center w-full h-full">
       
-      {/* Blurred Background layer to fill desktop screens beautifully */}
-      <div className="absolute inset-0 z-0 opacity-40">
-        <img src={imageSrc} className="w-full h-full object-cover blur-2xl transform scale-110" alt="blur-bg" />
-      </div>
-
-      {/* Main image layer - uses object-contain to never break borders on any device */}
+      {/* 
+        The background image now completely fills the viewport using object-cover 
+        and object-top. This ensures the ornamental top arch and floral borders 
+        reach the edges naturally on all devices without any empty card margins, 
+        satisfying the true full-screen requirement.
+      */}
       <div className="relative z-10 w-full h-full flex items-center justify-center">
         {isWalkingScene ? (
           <motion.img 
             src={imageSrc} 
             alt="Background" 
-            className="w-full h-full object-contain transform-origin-bottom drop-shadow-2xl"
+            className="w-full h-full object-cover object-top transform-origin-bottom"
             initial={{ scale: 1.0, y: 0 }}
             animate={{ scale: 1.15, y: '5%' }}
             transition={{ duration: zoomDuration, ease: "linear" }}
@@ -39,15 +39,17 @@ export function SceneBackground({
           <motion.img 
             src={imageSrc} 
             alt="Background" 
-            className="w-full h-full object-contain drop-shadow-2xl"
+            className="w-full h-full object-cover object-top"
             initial={{ scale: 1.0 }}
             animate={{ scale: 1.03 }}
             transition={{ duration: zoomDuration, ease: "linear" }}
           />
         )}
         
-        {/* Soft shadow overlay */}
-        <div className="absolute inset-0 bg-black pointer-events-none" style={{ opacity: overlayOpacity }} />
+        {/* Soft shadow overlay only if requested */}
+        {overlayOpacity > 0 && (
+          <div className="absolute inset-0 bg-black pointer-events-none" style={{ opacity: overlayOpacity }} />
+        )}
       </div>
 
       {/* Floating Petals/Dust */}
@@ -56,7 +58,7 @@ export function SceneBackground({
           {[...Array(15)].map((_, i) => (
             <motion.div
               key={i}
-              className="absolute w-2 h-2 md:w-3 md:h-3 rounded-full bg-champagne/40 mix-blend-screen"
+              className="absolute w-2 h-2 md:w-3 md:h-3 rounded-full bg-champagne/60 mix-blend-screen"
               style={{ filter: `blur(${Math.random() * 2 + 1}px)` }}
               initial={{ 
                 x: `${Math.random() * 100}vw`, 

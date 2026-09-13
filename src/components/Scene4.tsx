@@ -25,7 +25,7 @@ export default function Scene4({ onComplete }: Scene4Props) {
       exit={{ opacity: 0, transition: { duration: 1.5 } }}
       transition={{ duration: 2 }}
     >
-      <SceneBackground imageSrc="/assets/floral_bg.jpg" overlayOpacity={0.0} />
+      <SceneBackground imageSrc="/assets/ref_s4.jpg" overlayOpacity={0.0} />
 
       <div className="relative z-20 flex flex-col items-center justify-center gap-[4vh] w-full max-w-[calc(100vh*9/16)] h-full px-8 py-16 mx-auto">
         
