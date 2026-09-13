@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { AnimatePresence } from 'framer-motion';
 import SceneDoor from './SceneDoor';
 import Scene1 from './Scene1';

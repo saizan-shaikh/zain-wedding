@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { CinematicText, CinematicElement } from './CinematicText';
 import { SceneBackground } from './SceneBackground';
